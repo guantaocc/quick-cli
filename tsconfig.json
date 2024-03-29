@@ -1,0 +1,37 @@
+{
+  "compilerOptions": {
+    // 输出目录
+    "outDir": "lib",
+    // 模块系统
+    "module": "commonjs",
+    // ECMAScript 目标版本
+    "target": "es5",
+    // TypeScript 编译器所需的库
+    "lib": ["es5", "es6", "es7"],
+    // JSX 语法支持，用于 React
+    "jsx": "react",
+    // 是否生成源映射文件
+    "sourceMap": false,
+    // 是否移除注释
+    "removeComments": true,
+    // 是否始终启用严格模式
+    "alwaysStrict": true,
+    // 是否从声明中去除标记为 @internal 的声明
+    "stripInternal": true,
+    // 允许从没有默认导出的模块进行默认导入
+    "allowSyntheticDefaultImports": true,
+    // 启用实验性装饰器支持
+    "experimentalDecorators": true,
+    // 在 switch 语句中启用更严格的案例穿透检查
+    "noFallthroughCasesInSwitch": true,
+    // 强制文件名大小写一致
+    "forceConsistentCasingInFileNames": true,
+    // 是否生成相应的 .d.ts 声明文件
+    "declaration": true
+  },
+  // 编译器应该包含的文件
+  "include": [
+    ".eslintrc.js", // 用于 ESLint 配置
+    "src/**/*" // 包括 src 目录下的所有文件
+  ]
+}
