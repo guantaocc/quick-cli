@@ -1,7 +1,9 @@
 import * as chalk from 'chalk'
 import * as fs from 'fs-extra'
 import * as inquirer from 'inquirer'
-import { packageInfo, templates } from './config'
+import { packageInfo, templateRootFolder, templates } from './config'
+import * as shell from 'shelljs'
+import * as path from 'path'
 
 // 统一的日志输出
 export const log = {
@@ -45,4 +47,50 @@ export const checkFolder = (filePath: string, fn: () => void) => {
       fn()
     }
   })
+}
+
+// 初始化 git 仓库，拉取代码
+export const initRepositry = (templateName, projectFolder: string, fn: () => void): void => {
+  shell.config.silent = true
+  try {
+    shell.exec('git --help')
+  } catch (error) {
+    log.error('请先安装git命令')
+  }
+  if(!fs.existsSync(templateRootFolder)){
+    fs.mkdirSync(templateRootFolder)
+  }
+
+  // https://github.com/guantaocc/vite-vue2-template.git
+  const remoteRepositry = `https://github.com/guantaocc/${templateName}.git`
+
+  // 本地地址
+  const localRespositry = path.join(templateRootFolder, templateName)
+
+
+  if(!fs.existsSync(localRespositry)){
+    log.info('模板初始化中，请稍等')
+    try {
+      shell.cd(templateRootFolder)
+      shell.exec(`git clone ${remoteRepositry}`)
+    } catch (error) {
+      log.error(`模板拉取超时:${remoteRepositry}`)
+      return
+    }
+  }
+
+  shell.cd(localRespositry)
+  shell.exec('git pull')
+
+  try {
+    // 复制项目目录
+    fs.copySync(localRespositry, projectFolder, {
+      overwrite: true
+    })
+    fs.removeSync(path.join(projectFolder, '/.git/'))
+  } catch (error) {
+    log.error(`复制文件失败${error}`)
+    return
+  }
+  fn()
 }
