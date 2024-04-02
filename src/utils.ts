@@ -50,7 +50,7 @@ export const checkFolder = (filePath: string, fn: () => void) => {
 }
 
 // 初始化 git 仓库，拉取代码
-export const initRepositry = (templateName, projectFolder: string, fn: () => void): void => {
+export const initRepositry = (templateName: string, projectFolder: string, fn: () => void): void => {
   shell.config.silent = true
   try {
     shell.exec('git --help')
@@ -93,4 +93,13 @@ export const initRepositry = (templateName, projectFolder: string, fn: () => voi
     return
   }
   fn()
+}
+
+
+// 提示
+export const showSuccessTooltip = (folder) => {
+  log.info('请输入以下命令启动项目...')
+  console.log(`cd ${folder}`)
+  console.log('pnpm install')
+  console.log('pnpm dev')
 }

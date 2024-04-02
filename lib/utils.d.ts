@@ -5,4 +5,5 @@ export declare const log: {
     cmd: (text: string) => void;
 };
 export declare const checkFolder: (filePath: string, fn: () => void) => void;
-export declare const initRepositry: (templateName: any, projectFolder: string, fn: () => void) => void;
+export declare const initRepositry: (templateName: string, projectFolder: string, fn: () => void) => void;
+export declare const showSuccessTooltip: (folder: any) => void;

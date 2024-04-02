@@ -1,7 +1,9 @@
 import * as inquirer from "inquirer"
-import { checkFolder, initRepositry, log } from "./utils"
+import { checkFolder, initRepositry, log, showSuccessTooltip } from "./utils"
 import { packageInfo, templates } from "./config"
 import * as ora from "ora"
+import * as path from 'path'
+import * as fs from 'fs-extra'
 
 export default (folder: string): void => {
   if(!folder){
@@ -23,8 +25,11 @@ export default (folder: string): void => {
         const spinner = ora('工程初始化中，请稍等。。。').start()
         initRepositry(templateInfo.type, projectFolder, () => {
           spinner.text = '模板创建成功，正在初始化'
+          const pkgPath = path.join(projectFolder, '/package.json')
+          fs.writeFileSync(pkgPath, JSON.stringify({ ...require(pkgPath), ...{ version: pkgInfo.version, description: pkgInfo.description, name: folder }}, null, 2))
           spinner.stop()
           log.ok('项目初始化完成')
+          showSuccessTooltip(folder)
         })
       })
     })
